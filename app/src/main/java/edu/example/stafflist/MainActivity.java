@@ -5,11 +5,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import edu.example.stafflist.fragments.CreateNewStaffFragment;
 import edu.example.stafflist.fragments.ListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private ListFragment staffListFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
