@@ -6,12 +6,16 @@ public class Staff {
 
     private UUID id;
     private String name;
-    private int phoneNumber;
+    private String phoneNumber;
     private int age;
     private String gender;
 
-    public Staff() {
+    public Staff(String name, String phoneNumber, int age, String gender) {
         id =UUID.randomUUID();
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.age = age;
+        this.gender = gender;
     }
 
     public UUID getId() {
@@ -26,11 +30,11 @@ public class Staff {
         this.name = name;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
