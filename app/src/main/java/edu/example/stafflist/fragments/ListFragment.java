@@ -1,5 +1,8 @@
 package edu.example.stafflist.fragments;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,7 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.example.stafflist.R;
+import edu.example.stafflist.model.Constans;
 import edu.example.stafflist.model.Staff;
+import edu.example.stafflist.model.StaffDBHelper;
+import edu.example.stafflist.model.StaffData;
 
 
 public class ListFragment extends Fragment {
@@ -31,6 +37,9 @@ public class ListFragment extends Fragment {
     private CreateNewStaffFragment createNewStaffFragment;
     private List<Staff> staff;
 
+    private Cursor cursor;
+    private SQLiteDatabase database;
+
     public ListFragment() {
 
     }
@@ -39,16 +48,9 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        staff = new ArrayList<>();
-        staff.add(new Staff("John", "95-45-63", 22, "male"));
-        staff.add(new Staff("Mike", "096-123-45-69", 33, "male"));
-        staff.add(new Staff("Ann", "02", 75, "male"));
-        staff.add(new Staff("Karl", "95-89-79", 12, "male"));
-        staff.add(new Staff("Dan", "105", 43, "female"));
-        staff.add(new Staff("Helen", "23-56-55", 29, "female"));
-        staff.add(new Staff("Mark", "777 777 777", 43, "male"));
-        staff.add(new Staff("Dan", "105", 43, "female"));
-        staff.add(new Staff("Dan", "105", 43, "female"));
+        StaffDBHelper dbHelper = new StaffDBHelper(getActivity());
+        StaffData staffData = new StaffData(dbHelper);
+        staff = staffData.create();
     }
 
     @Override
@@ -118,7 +120,6 @@ public class ListFragment extends Fragment {
 
         public StaffAdapter(List<Staff> staff) {
            sStaff = staff;
-            Log.d("tag", sStaff.get(1).getName());
         }
 
         @NonNull
