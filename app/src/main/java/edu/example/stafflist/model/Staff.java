@@ -7,10 +7,10 @@ public class Staff {
     private UUID id;
     private String name;
     private String phoneNumber;
-    private int age;
+    private String age;
     private String gender;
 
-    public Staff(String name, String phoneNumber, int age, String gender) {
+    public Staff(String name, String age, String phoneNumber, String gender) {
         id =UUID.randomUUID();
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -38,11 +38,11 @@ public class Staff {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
