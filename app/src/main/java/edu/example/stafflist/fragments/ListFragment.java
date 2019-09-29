@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +21,8 @@ import java.util.List;
 import edu.example.stafflist.R;
 import edu.example.stafflist.model.Constans;
 import edu.example.stafflist.model.Staff;
-import edu.example.stafflist.model.StaffDBHelper;
-import edu.example.stafflist.model.StaffData;
+import edu.example.stafflist.StaffDBHelper;
+import edu.example.stafflist.StaffData;
 
 
 public class ListFragment extends Fragment {

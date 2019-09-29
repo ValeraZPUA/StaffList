@@ -1,14 +1,16 @@
-package edu.example.stafflist.model;
+package edu.example.stafflist;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.example.stafflist.model.Constans;
+import edu.example.stafflist.model.Staff;
 
 public class StaffData {
 
@@ -28,7 +30,7 @@ public class StaffData {
 
     public List<Staff> create() {
 
-        int dbSize = (int) DatabaseUtils.queryNumEntries(database,Constans.StaffConstants.TABLE_NAME);
+        int dbSize = (int) DatabaseUtils.queryNumEntries(database, Constans.StaffConstants.TABLE_NAME);
         if(dbSize==0) {
             staffToDB = addDefaultData();
             for(int i=0;i<staffToDB.size();i++){

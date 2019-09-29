@@ -1,4 +1,4 @@
-package edu.example.stafflist.model;
+package edu.example.stafflist;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
