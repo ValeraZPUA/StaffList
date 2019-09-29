@@ -6,9 +6,9 @@
     <string name="add_staff">Add staff</string>
     <string name="male">male</string>
     <string name="female">female</string>
-    <string name="age">Age</string>
-    <string name="name">Name</string>
-    <string name="number">Number</string>
+    <string name="age">Age:</string>
+    <string name="name">Name:</string>
+    <string name="number">Number:</string>
     <string name="add">Add</string>
-    <string name="gender">Gender</string>
+    <string name="gender">Gender:</string>
 </resources>
