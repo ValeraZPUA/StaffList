@@ -1,27 +1,21 @@
 package edu.example.stafflist.fragments;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.ArrayList;
+import com.google.gson.Gson;
 import java.util.List;
-
 import edu.example.stafflist.R;
 import edu.example.stafflist.model.Constans;
 import edu.example.stafflist.model.Staff;
@@ -36,21 +30,22 @@ public class ListFragment extends Fragment {
     private StaffAdapter staffAdapter;
     private CreateNewStaffFragment createNewStaffFragment;
     private List<Staff> staff;
-
-    private Cursor cursor;
-    private SQLiteDatabase database;
+    private Gson gson;
+    private StaffData staffData;
 
     public ListFragment() {
 
     }
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        gson = new Gson();
         StaffDBHelper dbHelper = new StaffDBHelper(getActivity());
-        StaffData staffData = new StaffData(dbHelper);
-        staff = staffData.create();
+        staffData = new StaffData(dbHelper);
+        if(staff==null) {
+            staff = staffData.create();
+        }
     }
 
     @Override
@@ -65,9 +60,10 @@ public class ListFragment extends Fragment {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createNewStaffFragment = new CreateNewStaffFragment();
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.addToBackStack(null);
+                createNewStaffFragment = new CreateNewStaffFragment();
+                createNewStaffFragment.setTargetFragment(ListFragment.this, Constans.OtherConst.REQUEST_CODE);
+                ft.addToBackStack(createNewStaffFragment.getClass().getName());
                 ft.replace(R.id.fragment_container, createNewStaffFragment);
                 ft.commit();
             }
@@ -76,16 +72,24 @@ public class ListFragment extends Fragment {
         staffAdapter = new StaffAdapter(staff);
         staffRecyclerView.setAdapter(staffAdapter);
 
-        //updateUI();
-
         return view;
     }
 
-    private void updateUI() {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Constans.OtherConst.RESULT_CODE) {
+            if (requestCode==Constans.OtherConst.REQUEST_CODE){
+                String gsonNewStaff =data.getStringExtra(Constans.OtherConst.TAG);
+                addStaff(gsonNewStaff);
+            }
+        }
+    }
 
-        staffAdapter = new StaffAdapter(staff);
-        staffRecyclerView.setAdapter(staffAdapter);
-
+    public void addStaff(String gsonNewStaff) {
+        Staff newStaff = gson.fromJson(gsonNewStaff, Staff.class);
+        staff.add(newStaff);
+        staffData.addToDB(newStaff);
     }
 
     private class StaffHolder extends RecyclerView.ViewHolder {
@@ -105,12 +109,10 @@ public class ListFragment extends Fragment {
         public void bind(Staff staff) {
 
             sStaff = staff;
-            Log.d("tag", "bind " + sStaff.getName());
             tvName.setText(staff.getName());
             tvAge.setText(String.valueOf(staff.getAge()));
             tvPhoneNumber.setText(staff.getPhoneNumber());
             tvGender.setText(staff.getGender());
-            Log.d("tag", "bind end" );
         }
     }
 
@@ -126,24 +128,21 @@ public class ListFragment extends Fragment {
         @Override
         public StaffHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            Log.d("tag", "onCreateViewHolder");
             return new StaffHolder(layoutInflater,parent);
         }
 
         @Override
         public void onBindViewHolder(@NonNull StaffHolder holder, int position) {
-            Log.d("tag", "onBindViewHolder");
             Staff staff = sStaff.get(position);
-            Log.d("tag", "onBindViewHolder position " + position);
-            Log.d("tag", "onBindViewHolder staff " + staff.getName());
             holder.bind(staff);
         }
 
         @Override
         public int getItemCount() {
             int size = staff.size();
-            Log.d("tag", String.valueOf(size));
             return size;
         }
     }
+
+
 }
